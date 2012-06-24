@@ -1,4 +1,6 @@
 #!/bin/bash
+# ar1hur 2012
+
 ######## configuration ###############
 DB_USER="root"
 DB_PASS="root"
