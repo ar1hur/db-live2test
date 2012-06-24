@@ -15,7 +15,7 @@ if [ -a $dump ]; then
 	result=`mysql -u"$DB_USER" -p"$DB_PASS" -e "SHOW DATABASES;" | grep "$DB_NAME_TEST"`
 	if [ "$DB_NAME_TEST" == "$result" ]; then
 		echo "info: test database exists! dropping..."
-		mysql -uroot -proot -e "DROP DATABASE $DB_NAME_TEST;"
+		mysql -u"$DB_USER" -p"$DB_PASS" -e "DROP DATABASE $DB_NAME_TEST;"
 	else
 		echo "info: test database doesn't exist..."
 	fi
