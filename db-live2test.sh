@@ -1,9 +1,15 @@
 #!/bin/bash
+# ar1hur 2012
+
 ######## configuration ###############
 DB_USER="root"
 DB_PASS="root"
 DB_NAME_LIVE="db_live"
 DB_NAME_TEST="db_test"
+
+# magento base urls with "/" at the end(!)
+BASEURL_TEST_UNSECURE="http://test.domain.de/" 
+BASEURL_TEST_SECURE="https://test.domain.de/"
 ######################################
 
 dump="live_dump_$DB_NAME_LIVE.sql"
@@ -22,6 +28,11 @@ if [ -a $dump ]; then
 
 	echo "info: updating test db..."
 	mysql -u"$DB_USER" -p"$DB_PASS" -D$DB_NAME_TEST < $dump
+
+	# magento specific
+	echo "info: updating magento config -> domain..."
+        mysql -u"$DB_USER" -p"$DB_PASS" -D$DB_NAME_TEST -e "UPDATE core_config_data SET value='$BASEURL_TEST_UNSECURE' WHERE path='web/unsecure/base_url';"
+	mysql -u"$DB_USER" -p"$DB_PASS" -D$DB_NAME_TEST -e "UPDATE core_config_data SET value='$BASEURL_TEST_SECURE' WHERE path='web/secure/base_url';"
 	echo "done."
 else
 	echo "error: could not create dump of $DB_NAME_LIVE! aborting..."
